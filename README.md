@@ -6,7 +6,7 @@ Live page: https://billsharifzade.github.io/space_apps_stats/
 
 - **Source.** The public team and project pages of the [Dushanbe local event](https://www.spaceappschallenge.org/2026/local-events/dushanbe/?tab=teams), read on 16 November 2026.
 - **Privacy.** Member names are not published here, only the number of members per team.
-- **The rating is unofficial.** An AI model (Claude) scored each written submission from 1 to 10 on impact, creativity, validity, relevance and presentation. It did not open the apps, watch the videos or read the code. The page was put together by a participating team (BilliBon), whose own project is in the list; read its place with that in mind.
+- **The rating is unofficial.** An AI model (Claude) scored each project from 1 to 10 on impact, creativity, validity, relevance and presentation, from three things: the team's text, an automatic browser test of the project site (screenshots, clicks, errors, phone view) and the public facts of its code repository. It did not watch the demo videos or check the science. The page was put together by a participating team (BilliBon), whose own project is in the list; read its place with that in mind.
 - **Not affiliated** with NASA or the Space Apps organisers.
 
-`tools/` holds the scripts that fetched the data, checked the links and built `data.js`. The page itself is `index.html` with no build step.
+`tools/` holds the scripts that fetched the data, checked the links, tested the sites (`probe.mjs`), read the repositories (`repos.py`) and built `data.js`. The page itself is `index.html` with no build step.

@@ -96,7 +96,7 @@ button.more { font: inherit; font-size: 14px; background: var(--card); color: va
 <body>
 <nav class="top" aria-label="Sections"><div class="wrap">
   <b>Space Apps Dushanbe 2026</b>
-  <a href="#challenges">Challenges</a><a href="#teams">Teams</a><a href="#how">How they built</a><a href="#rating">Rating</a><a href="#all">All teams</a>
+  <a href="#challenges">Challenges</a><a href="#teams">Teams</a><a href="#how">How they built</a><a href="#tested">Tested</a><a href="#rating">Rating</a><a href="#all">All teams</a>
 </div></nav>
 
 <header class="hero"><div class="wrap">
@@ -148,16 +148,29 @@ button.more { font: inherit; font-size: 14px; background: var(--card); color: va
   </div>
 </div></section>
 
+<section id="tested"><div class="wrap">
+  <h2>What a real test found</h2>
+  <p class="intro">A script opened every project site in a browser, clicked up to ten buttons and tabs, noted errors, and looked at the page on a phone-sized screen. It also read the public facts of each team's code repository. Nothing was typed or submitted.</p>
+  <div class="grid">
+    <div class="card"><h3>Does the product work?</h3><p class="note">The judges' verdict after the test. "Could not test" means the project link is a file, a video or only code.</p><div id="x-works"></div></div>
+    <div class="card"><h3>What the browser test saw</h3><p class="note">Of the <span id="x-nsites"></span> projects whose link is a website.</p><div id="x-probe"></div></div>
+    <div class="card"><h3>Code in the open</h3><p class="note">Of all 125 submitted projects. A repository counts when the submission links to it.</p><div id="x-repo"></div></div>
+    <div class="card"><h3>Commits per repository</h3><p class="note">How much history the public repositories hold.</p><div id="x-commits"></div></div>
+    <div class="card"><h3>Design of the real product</h3><p class="note">A separate 1–10 mark from the screenshots: 5 is a plain template, 7 is clean and considered, 9 is distinctive.</p><div id="x-design"></div></div>
+    <div class="card"><h3>What the text promised, what the product showed</h3><p class="note">Each dot is a project: its score from the text alone against its score after the test. Dots under the line read better than they are.</p><div id="x-gap"></div></div>
+  </div>
+</div></section>
+
 <section id="rating"><div class="wrap">
   <h2>An unofficial rating</h2>
-  <p class="intro">This is not the event's judging and has no standing in it.</p>
+  <p class="intro">This is not the event's judging and has no standing in it. It is based on what each team really built, tested by a script, and not only on what the team wrote.</p>
   <div class="method" id="method"></div>
   <div class="podium" id="podium"></div>
   <div class="grid" style="margin-bottom:16px">
     <div class="card"><h3>Spread of total scores</h3><p class="note">Each project gets 1–10 on five criteria, so 5 to 50 in all.</p><div id="r-hist"></div></div>
     <div class="card"><h3>Average by criterion</h3><p class="note">Most projects answer their challenge. Proof that the thing works is rarer.</p><div id="r-crit"></div></div>
     <div class="card"><h3>Average score by challenge</h3><p class="note">The number of rated projects is beside each bar.</p><div id="r-chal"></div></div>
-    <div class="card"><h3>Does writing more score more?</h3><p class="note">Each dot is a project. Length helps up to a point; the longest texts are not the best.</p><div id="r-scatter"></div></div>
+    <div class="card"><h3>Does writing more score more?</h3><p class="note">Each dot is a project, by the length of its text.</p><div id="r-scatter"></div></div>
   </div>
   <div class="controls">
     <input id="q" type="search" placeholder="Search team or project" aria-label="Search team or project">
@@ -318,9 +331,27 @@ const CR = ["impact", "creativity", "validity", "relevance", "presentation"], ca
 const ranked = [...R].sort((a, b) => b.score.total - a.score.total || b.score.validity - a.score.validity || a.team.localeCompare(b.team));
 ranked.forEach((t, i) => { t.rank = i && ranked[i - 1].score.total === t.score.total ? ranked[i - 1].rank : i + 1; });
 const bm = Object.values(D.batchMeans || {});
-$("#method").innerHTML = `<b>How it was made.</b> An AI model (Claude) read the text of all ${R.length} submitted projects and scored each from 1 to 10 on the five criteria the event names: impact, creativity, validity, relevance and presentation. The projects were shuffled into five groups and each group was read by a separate run of the model with the same written rubric${bm.length ? ` (group averages ran from ${Math.min(...bm)} to ${Math.max(...bm)} of 50, so a gap of a few points between two projects means little)` : ""}. <b>What it did not do:</b> it did not open the apps, watch the videos or read the code. It judged the written submission and whether the links open. A project that works better than it reads is underrated here. <b>Conflict of interest:</b> this page was put together by a participating team, ${ME} (marked with an orange edge in the table). Its project was scored in the same run by the same rubric, but treat its place with that in mind.`;
+$("#method").innerHTML = `<b>How it was made.</b> For each of the ${R.length} submitted projects an AI model (Claude) was given three things: the team's text, the result of an automatic browser test of the project site (screenshots on desktop and phone, what happened when buttons were clicked, errors, data requests), and the public facts of the code repository. It scored each project from 1 to 10 on the five criteria the event names: impact, creativity, validity, relevance and presentation. Where the text and the evidence disagreed, the evidence won. The projects were shuffled into five groups, each read by a separate run of the model with the same written rubric${bm.length ? ` (group averages ran from ${Math.min(...bm)} to ${Math.max(...bm)} of 50, so a gap of a few points between two projects means little)` : ""}. <b>Limits:</b> the test clicks, it does not play a game to the end or check the science; it did not watch the demo videos; a product behind a file link or a video could not be tested and is capped. One automatic visit can catch a site on a bad minute. <b>Conflict of interest:</b> this page was put together by a participating team, ${ME} (marked with an orange edge in the table). Its project went through the same test and rubric, but treat its place with that in mind.`;
 $("#podium").innerHTML = ranked.slice(0, 3).map((t) => `<div class="card"><div class="rank">PLACE ${t.rank} · ${esc(short(t.challenge)).toUpperCase()}</div><div class="score">${t.score.total}<small> / 50</small></div><h3>${esc(t.team)}</h3><p>${esc(t.score.one)}</p></div>`).join("");
 function drawRatingCharts() {
+  {
+    const order = ["works", "partly works", "broken", "could not test"], w = count(R, (t) => t.score.works || "not judged"), get = (k) => (w.find((x) => x[0] === k) || [k, 0])[1];
+    hbar($("#x-works"), order.filter((k) => get(k)).map((k) => [k[0].toUpperCase() + k.slice(1), get(k), `${get(k)} · ${Math.round(100 * get(k) / R.length)}%`]), { labelWidth: 130, rowHeight: 34, label: "Projects by whether they work" });
+    const P = S.filter((t) => t.probe), L = P.filter((t) => t.probe.loaded), n = (f) => L.filter(f).length; $("#x-nsites").textContent = P.length;
+    hbar($("#x-probe"), [["The site loaded", L.length], ["No script errors", n((t) => !t.probe.errors)], ["No failed requests", n((t) => !t.probe.http)], ["Fits a phone screen", n((t) => t.probe.overflow <= 8)], ["Every clicked control reacted", n((t) => t.probe.clicks > 0 && t.probe.changed === t.probe.clicks)], ["Asks a server for data", n((t) => t.probe.api > 0)], ["Ready within 5 seconds", n((t) => t.probe.loadS <= 5)]].map(([k, v]) => [k, v, `${v} · ${Math.round(100 * v / P.length)}%`]), { labelWidth: 220, max: P.length, rowHeight: 28, label: "Results of the browser test" });
+    const G = S.filter((t) => t.repo), g = (f) => G.filter(f).length;
+    hbar($("#x-repo"), [["Public repository linked", G.length], ["More than 10 commits", g((t) => t.repo.commits > 10)], ["Has a real README", g((t) => t.repo.readme > 500)], ["Has test files", g((t) => t.repo.tests > 0)], ["States a licence", g((t) => t.repo.license)], ["More than one author", g((t) => t.repo.authors > 1)]].map(([k, v]) => [k, v, `${v} · ${Math.round(100 * v / S.length)}%`]), { labelWidth: 210, max: S.length, rowHeight: 28, label: "Facts about public repositories" });
+    const ce = [1, 2, 6, 11, 21, 51, 101, 1e9], cn = ["1", "2–5", "6–10", "11–20", "21–50", "51–100", "over 100"];
+    vbar($("#x-commits"), cn.map((nm, i) => { const c = G.filter((t) => t.repo.commits >= ce[i] && t.repo.commits < ce[i + 1]).length; return [nm, c, `<b>${nm} commit${nm === "1" ? "" : "s"}</b><br>${c} repositories`]; }), { values: true, label: "Repositories by number of commits" });
+    const Dn = R.filter((t) => t.score.design);
+    vbar($("#x-design"), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((v) => { const c = Dn.filter((t) => t.score.design === v).length; return [String(v), c, `<b>Design ${v} of 10</b><br>${c} projects`]; }), { values: true, label: "Projects by design mark" });
+    const X = R.filter((t) => t.score.text), W = Math.max(280, $("#x-gap").clientWidth || 560), H = 250, L0 = 34, B = 34, T0 = 10, x = (v) => L0 + (W - L0 - 12) * (v - 5) / 45, y = (v) => T0 + (H - B - T0) * (1 - (v - 5) / 45);
+    let g2 = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Score from text against score after the test">`;
+    for (const v of [10, 20, 30, 40, 50]) g2 += `<line x1="${L0}" x2="${W}" y1="${y(v)}" y2="${y(v)}" stroke="var(--grid)"/><text x="${L0 - 6}" y="${y(v) + 4}" text-anchor="end">${v}</text><text x="${x(v)}" y="${H - 14}" text-anchor="middle">${v}</text>`;
+    g2 += `<line x1="${x(5)}" y1="${y(5)}" x2="${x(50)}" y2="${y(50)}" stroke="var(--ink)" stroke-dasharray="3 3"/><text x="${W}" y="${H}" text-anchor="end">score from the text alone</text>`;
+    X.forEach((t) => { g2 += `<circle tabindex="0" data-tip="<b>${esc(t.team)}</b><br>text ${t.score.text} → tested ${t.score.total}" cx="${x(t.score.text)}" cy="${y(t.score.total)}" r="5" fill="${t.team === ME ? "var(--amber)" : "var(--blue)"}" fill-opacity=".75" stroke="var(--card)" stroke-width="1.5"/>`; });
+    $("#x-gap").innerHTML = g2 + "</svg>"; bindTips($("#x-gap"));
+  }
   const bins = []; for (let a = 10; a < 50; a += 4) { const c = R.filter((t) => t.score.total >= a && t.score.total < a + 4).length; bins.push([`${a}–${a + 3}`, c, `<b>${a} to ${a + 3} points</b><br>${c} projects`]); }
   vbar($("#r-hist"), bins, { values: true, label: "Projects by total score" });
   hbar($("#r-crit"), CR.map((c) => [cap(c), +mean(R.map((t) => t.score[c])).toFixed(1), mean(R.map((t) => t.score[c])).toFixed(1) + " / 10"]), { labelWidth: 120, max: 10, rowHeight: 34, label: "Average score per criterion" });
@@ -349,8 +380,8 @@ function drawRating() {
   $("#r-more").hidden = showAll || filtered || rows.length <= 25; $("#r-more").textContent = `Show all ${rows.length}`;
   $("#rtable tbody").innerHTML = shown.map((t) => {
     const s = t.score, d = stateWord[t.demoState], l = stateWord[t.linkState];
-    let h = `<tr class="row${t.team === ME ? " me" : ""}" tabindex="0" data-id="${t.id}" aria-expanded="${open === t.id}"><td class="num">${t.rank}</td><td><div class="t">${esc(t.team)}</div><div class="c">${esc(short(t.challenge))} · ${esc(s.one)}</div></td><td class="num"><span class="total">${s.total}</span></td>${CR.map((c) => `<td class="num">${s[c]}</td>`).join("")}</tr>`;
-    if (open === t.id) h += `<tr class="detail"><td colspan="8"><div class="cols"><div><h4>Project</h4><p><b>${esc(t.project)}</b></p><h4>Strengths</h4><p>${esc(s.plus)}</p><h4>Weaknesses</h4><p>${esc(s.minus)}</p><h4>Links</h4><p><a href="${esc(t.link)}" target="_blank" rel="noopener noreferrer">Project</a> <span class="pill ${l[1]}">${l[0]}</span> <a href="${esc(t.demo)}" target="_blank" rel="noopener noreferrer">Demo</a> <span class="pill ${d[1]}">${d[0]}</span> <a href="${esc(t.url)}" target="_blank" rel="noopener noreferrer">Team page</a></p></div><div><h4>Scores</h4>${CR.map((c) => `<div class="bar5"><span>${cap(c)}</span><span class="track"><i style="width:${s[c] * 10}%"></i></span><b>${s[c]}</b></div>`).join("")}<h4>About</h4><p><span class="pill">${esc(s.kind)}</span><span class="pill">${esc(s.built)}</span><span class="pill">${t.members} member${t.members > 1 ? "s" : ""}</span><span class="pill">${t.demoKind}</span></p>${t.techWords.length ? `<p style="margin-top:6px">${t.techWords.map((w) => `<span class="pill">${esc(w)}</span>`).join("")}</p>` : ""}</div></div></td></tr>`;
+    let h = `<tr class="row${t.team === ME ? " me" : ""}" tabindex="0" data-id="${t.id}" aria-expanded="${open === t.id}"><td class="num">${t.rank}</td><td><div class="t">${esc(t.team)}${s.works ? ` <span class="pill ${s.works === "works" ? "ok" : s.works === "broken" ? "bad" : ""}" style="font-weight:400;margin-left:6px">${esc(s.works)}</span>` : ""}</div><div class="c">${esc(short(t.challenge))} · ${esc(s.one)}</div></td><td class="num"><span class="total">${s.total}</span></td>${CR.map((c) => `<td class="num">${s[c]}</td>`).join("")}</tr>`;
+    if (open === t.id) h += `<tr class="detail"><td colspan="8"><div class="cols"><div><h4>Project</h4><p><b>${esc(t.project)}</b></p>${s.evidence ? `<h4>What the test showed</h4><p>${esc(s.evidence)}</p>` : ""}<h4>Strengths</h4><p>${esc(s.plus)}</p><h4>Weaknesses</h4><p>${esc(s.minus)}</p><h4>Links</h4><p><a href="${esc(t.link)}" target="_blank" rel="noopener noreferrer">Project</a> <span class="pill ${l[1]}">${l[0]}</span> <a href="${esc(t.demo)}" target="_blank" rel="noopener noreferrer">Demo</a> <span class="pill ${d[1]}">${d[0]}</span> <a href="${esc(t.url)}" target="_blank" rel="noopener noreferrer">Team page</a></p></div><div><h4>Scores</h4>${CR.map((c) => `<div class="bar5"><span>${cap(c)}</span><span class="track"><i style="width:${s[c] * 10}%"></i></span><b>${s[c]}</b></div>`).join("")}${s.design ? `<div class="bar5" style="margin-top:10px"><span>Design</span><span class="track"><i style="width:${s.design * 10}%;background:var(--amber)"></i></span><b>${s.design}</b></div>` : ""}${t.probe ? `<h4>Browser test</h4><p>${t.probe.loaded ? `<span class="pill">ready in ${t.probe.loadS} s</span><span class="pill">${t.probe.changed} of ${t.probe.clicks} clicks reacted</span><span class="pill ${t.probe.errors ? "bad" : "ok"}">${t.probe.errors} script error${t.probe.errors === 1 ? "" : "s"}</span><span class="pill ${t.probe.overflow > 8 ? "bad" : "ok"}">${t.probe.overflow > 8 ? "overflows on a phone" : "fits a phone"}</span>` : `<span class="pill bad">did not load</span>`}</p>` : ""}${t.repo ? `<h4>Repository</h4><p><a href="${esc(t.repo.url)}" target="_blank" rel="noopener noreferrer">${esc(t.repo.url.replace("https://github.com/", ""))}</a><br><span class="pill">${t.repo.commits} commits</span><span class="pill">${t.repo.files} files</span><span class="pill">${t.repo.tests} test files</span>${t.repo.lang ? `<span class="pill">${esc(t.repo.lang)}</span>` : ""}</p>` : ""}<h4>About</h4><p>${s.kind ? `<span class="pill">${esc(s.kind)}</span>` : ""}${s.built ? `<span class="pill">${esc(s.built)}</span>` : ""}<span class="pill">${t.members} member${t.members > 1 ? "s" : ""}</span><span class="pill">${t.demoKind}</span></p>${t.techWords.length ? `<p style="margin-top:6px">${t.techWords.map((w) => `<span class="pill">${esc(w)}</span>`).join("")}</p>` : ""}</div></div></td></tr>`;
     return h;
   }).join("") || `<tr><td colspan="8">No project matches. Clear the search to see all.</td></tr>`;
 }

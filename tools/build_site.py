@@ -84,6 +84,18 @@ for f in sorted(glob.glob(str(HERE / "work/scores*.json"))):
             s["raw"] = s["total"] = sum(int(s[c]) for c in CRIT)
             scores[CODES[s["code"]]] = s
             by_batch[s["code"][:2]].append(s["raw"])
+first = {k: v["raw"] for k, v in scores.items()}
+final, by_batch = {}, collections.defaultdict(list)
+for f in sorted(glob.glob(str(HERE / "work/final*.json"))):
+    for s in json.loads(Path(f).read_text()):
+        if s["code"] in CODES:
+            s["raw"] = s["total"] = sum(int(s[c]) for c in CRIT)
+            final[CODES[s["code"]]] = s
+            by_batch[s["code"][:2]].append(s["raw"])
+if final:
+    scores = final
+PROBE = json.loads((HERE / "work/probe2.json").read_text()) if (HERE / "work/probe2.json").exists() else {}
+REPOS = json.loads((HERE / "work/repos.json").read_text()) if (HERE / "work/repos.json").exists() else {}
 BATCH = {b: round(statistics.mean(v), 1) for b, v in sorted(by_batch.items())}
 print("batch means", BATCH)
 
@@ -111,10 +123,19 @@ for t in T:
             found = [name for name, rx in words.items() if re.search(rx, blob)]
             row[group + "Words"] = found
             mentions[group].update(found)
+        pr, rp = PROBE.get(t["id"]) or {}, REPOS.get(t["id"])
+        if pr.get("kind") == "site":
+            cert = lambda e: "CERT_AUTHORITY" in e or "openfreemap" in e   # faults of the test network, not of the site
+            row["probe"] = {"loaded": bool(pr.get("shot")), "loadS": round(pr.get("loadMs", 0) / 1000, 1), "clicks": pr.get("clicks", 0), "changed": pr.get("clicksChanged", 0),
+                            "errors": len([e for e in pr.get("errors", []) if not cert(e)]), "http": len(pr.get("httpErrors", [])), "overflow": pr.get("phoneOverflow") or 0,
+                            "small": pr.get("phoneSmallText") or 0, "api": pr.get("apiCalls", 0), "requests": pr.get("requests", 0), "canvas": pr.get("canvas", 0)}
+        if rp:
+            row["repo"] = {"url": rp["url"], "commits": rp["commits"], "files": rp["files"], "tests": rp["tests"], "license": rp["license"], "authors": rp.get("authors"),
+                           "lang": max(rp["languages"], key=rp["languages"].get) if rp["languages"] else "", "readme": rp.get("readmeChars", 0)}
         s = scores.get(t["id"])
         if s:
             row["score"] = {c: int(s[c]) for c in CRIT} | {"total": s["total"], "raw": s["raw"], "one": s["one_line"], "plus": s["strengths"], "minus": s["weaknesses"],
-                                                          "kind": s.get("kind", ""), "built": s.get("built", "")}
+                                                          "kind": s.get("kind", ""), "built": s.get("built", ""), "design": s.get("design"), "works": s.get("works", ""), "evidence": s.get("evidence", ""), "text": first.get(t["id"])}
     teams.append(row)
 
 data = {"fetched": "2026-11-16", "deadline": "2026-11-15T18:59:00Z", "event": "Dushanbe", "teams": teams,
