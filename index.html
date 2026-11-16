@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Space Apps 2026 Dushanbe: teams, projects and an unofficial rating</title>
-<meta name="description" content="Every team and project of NASA Space Apps Challenge 2026 in Dushanbe in charts, with an unofficial rating of the 125 submitted projects.">
+<title>Space Apps 2026 Dushanbe in numbers</title>
+<meta name="description" content="Every team and project of NASA Space Apps Challenge 2026 in Dushanbe in charts, with a browser test of every project site.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23131a27'/%3E%3Crect x='6' y='18' width='4' height='8' rx='1.5' fill='%235a8fe6'/%3E%3Crect x='14' y='14' width='4' height='12' rx='1.5' fill='%235a8fe6'/%3E%3Crect x='22' y='6' width='4' height='20' rx='1.5' fill='%23c8721c'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -85,6 +85,8 @@ tr.detail td { background: var(--wash); padding: 16px 18px 18px; }
 .podium { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 16px; } @media (max-width: 860px) { .podium { grid-template-columns: 1fr; } }
 .podium .card { grid-column: auto; } .podium .rank { font: 500 12px var(--mono); color: var(--faint); letter-spacing: .06em; } .podium .score { font: 700 40px/1 var(--display); letter-spacing: -.03em; margin: 8px 0 2px; } .podium .score small { font: 400 14px var(--mono); color: var(--faint); }
 .podium h3 { font-size: 20px; } .podium p { margin: 6px 0 0; color: var(--soft); font-size: 14px; }
+.recs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; } @media (max-width: 1000px) { .recs { grid-template-columns: repeat(2, 1fr); } } @media (max-width: 480px) { .recs { grid-template-columns: 1fr; } }
+.rec { background: var(--card); border: 1px solid var(--rule); border-radius: 14px; padding: 16px 16px 14px; } .rec .k { font: 500 11px var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--faint); } .rec .v { font: 700 28px/1.1 var(--display); letter-spacing: -.02em; margin: 10px 0 4px; } .rec .w { font-weight: 600; overflow-wrap: anywhere; } .rec .d { font-size: 13px; color: var(--soft); margin-top: 2px; }
 .method { background: var(--card); border: 1px solid var(--rule); border-left: 3px solid var(--amber); border-radius: 10px; padding: 14px 18px; margin: 0 0 20px; font-size: 15px; color: var(--soft); }
 .method b { color: var(--ink); }
 footer { padding: 40px 0 60px; color: var(--soft); font-size: 14px; } footer p { max-width: 80ch; }
@@ -96,7 +98,7 @@ button.more { font: inherit; font-size: 14px; background: var(--card); color: va
 <body>
 <nav class="top" aria-label="Sections"><div class="wrap">
   <b>Space Apps Dushanbe 2026</b>
-  <a href="#challenges">Challenges</a><a href="#teams">Teams</a><a href="#how">How they built</a><a href="#tested">Tested</a><a href="#rating">Rating</a><a href="#all">All teams</a>
+  <a href="#challenges">Challenges</a><a href="#teams">Teams</a><a href="#how">How they built</a><a href="#tested">Tested</a><a href="#code">Code</a><a href="#records">Records</a><a href="#all">All teams</a>
 </div></nav>
 
 <header class="hero"><div class="wrap">
@@ -128,6 +130,8 @@ button.more { font: inherit; font-size: 14px; background: var(--card); color: va
   <div class="grid">
     <div class="card"><h3>Team size</h3><div class="legend"><span><i style="background:var(--blue)"></i>Submitted</span><span><i style="background:var(--rest)"></i>Did not submit</span></div><div id="t-size"></div></div>
     <div class="card"><h3>When teams were formed</h3><p class="note">Running total of team pages by the day they were first published. The hackathon began on 14 November.</p><div id="t-created"></div></div>
+    <div class="card"><h3>Who finishes</h3><p class="note">Percent of teams that submitted, by number of members. Going alone was the hard way.</p><div id="t-rate"></div></div>
+    <div class="card"><h3>What teams call themselves</h3><p class="note">Of the 173 team names.</p><div id="t-names"></div><p class="note" id="t-countries" style="margin:10px 0 0"></p></div>
     <div class="card"><h3>Skills teams asked for</h3><p class="note">From the team pages of teams that looked for members.</p><div id="t-skills"></div></div>
     <div class="card"><h3>Languages teams work in</h3><p class="note">As listed on the team page. A team may list several, and most listed none.</p><div id="t-lang"></div></div>
   </div>
@@ -139,52 +143,47 @@ button.more { font: inherit; font-size: 14px; background: var(--card); color: va
   <div class="grid">
     <div class="card"><h3>What teams used AI for</h3><p class="note">The submission form asks every team. A team may tick several.</p><div id="h-ai"></div></div>
     <div class="card"><h3>AI tools named in the text</h3><p class="note">Not every team names its tools, so these are lower bounds.</p><div id="h-aitools"></div></div>
+    <div class="card"><h3>How many kinds of AI use a team ticked</h3><p class="note">Out of nine kinds on the form.</p><div id="h-aicount"></div></div>
+    <div class="card"><h3>AI built into the product, by challenge</h3><p class="note">Share of a challenge's projects that ticked "building AI/ML into the project".</p><div id="h-aibuilt"></div></div>
     <div class="card"><h3>Where the project lives</h3><p class="note">The host of the project link.</p><div id="h-home"></div></div>
     <div class="card"><h3>What the demo is</h3><p class="note">The rules allow a 30-second video or seven slides.</p><div id="h-demo"></div></div>
     <div class="card"><h3>Technology named</h3><div id="h-tech"></div></div>
     <div class="card"><h3>Data named</h3><p class="note">NASA missions, archives and other open data.</p><div id="h-data"></div></div>
     <div class="card"><h3>Do the links open?</h3><p class="note">Checked by a script on 16 November, without logging in. "Not checked" means the site turned the script away or was out of reach (all YouTube links); a person may still get in.</p><div class="legend"><span><i style="background:var(--blue)"></i>Opens</span><span><i style="background:var(--rest)"></i>Not checked</span><span><i style="background:var(--amber)"></i>Needs a login or is broken</span></div><div id="h-links"></div></div>
     <div class="card"><h3>How much teams wrote</h3><p class="note">Characters in the project text and references.</p><div id="h-chars"></div></div>
+    <div class="card"><h3>Who wrote the most, by challenge</h3><p class="note">Median length of a project text, in thousands of characters.</p><div id="h-charsch"></div></div>
+    <div class="card"><h3>Words in project names</h3><p class="note">Projects whose name contains the word.</p><div id="h-words"></div></div>
   </div>
 </div></section>
 
 <section id="tested"><div class="wrap">
   <h2>What a real test found</h2>
-  <p class="intro">A script opened every project site in a browser, clicked up to ten buttons and tabs, noted errors, and looked at the page on a phone-sized screen. It also read the public facts of each team's code repository. Nothing was typed or submitted.</p>
+  <p class="intro">A script opened every project site in a browser, clicked up to ten buttons and tabs, noted errors, and looked at the page on a phone-sized screen. Nothing was typed or submitted. One visit can catch a site on a bad minute, so read these as a snapshot.</p>
   <div class="grid">
-    <div class="card"><h3>Does the product work?</h3><p class="note">The judges' verdict after the test. "Could not test" means the project link is a file, a video or only code.</p><div id="x-works"></div></div>
     <div class="card"><h3>What the browser test saw</h3><p class="note">Of the <span id="x-nsites"></span> projects whose link is a website.</p><div id="x-probe"></div></div>
-    <div class="card"><h3>Code in the open</h3><p class="note">Of all 125 submitted projects. A repository counts when the submission links to it.</p><div id="x-repo"></div></div>
-    <div class="card"><h3>Commits per repository</h3><p class="note">How much history the public repositories hold.</p><div id="x-commits"></div></div>
-    <div class="card"><h3>Design of the real product</h3><p class="note">A separate 1–10 mark from the screenshots: 5 is a plain template, 7 is clean and considered, 9 is distinctive.</p><div id="x-design"></div></div>
-    <div class="card"><h3>What the text promised, what the product showed</h3><p class="note">Each dot is a project: its score from the text alone against its score after the test. Dots under the line read better than they are.</p><div id="x-gap"></div></div>
+    <div class="card"><h3>How fast the sites open</h3><p class="note">Seconds until the page was ready, on one visit from Dushanbe. Free hosts that had gone to sleep take longest.</p><div id="x-speed"></div></div>
+    <div class="card"><h3>Typefaces on the project sites</h3><p class="note">Sites on which a typeface is used. Arial and Helvetica are mostly browser defaults.</p><div id="x-fonts"></div></div>
+    <div class="card"><h3>Services the sites call</h3><p class="note">Sites that contacted each kind of outside server while loading.</p><div id="x-services"></div></div>
+    <div class="card"><h3>NASA servers called live</h3><p class="note">Sites that fetched from each NASA address in the visitor's browser. Data prepared beforehand does not show here.</p><div id="x-nasa"></div></div>
+    <div class="card"><h3>How heavy the pages are</h3><p class="note">Requests made while the first page loaded.</p><div id="x-weight"></div></div>
   </div>
 </div></section>
 
-<section id="rating"><div class="wrap">
-  <h2>An unofficial rating</h2>
-  <p class="intro">This is not the event's judging and has no standing in it. It is based on what each team really built, tested by a script, and not only on what the team wrote.</p>
-  <div class="method" id="method"></div>
-  <div class="podium" id="podium"></div>
-  <div class="grid" style="margin-bottom:16px">
-    <div class="card"><h3>Spread of total scores</h3><p class="note">Each project gets 1–10 on five criteria, so 5 to 50 in all.</p><div id="r-hist"></div></div>
-    <div class="card"><h3>Average by criterion</h3><p class="note">Most projects answer their challenge. Proof that the thing works is rarer.</p><div id="r-crit"></div></div>
-    <div class="card"><h3>Average score by challenge</h3><p class="note">The number of rated projects is beside each bar.</p><div id="r-chal"></div></div>
-    <div class="card"><h3>Does writing more score more?</h3><p class="note">Each dot is a project, by the length of its text.</p><div id="r-scatter"></div></div>
+<section id="code"><div class="wrap">
+  <h2>When and how the code was written</h2>
+  <p class="intro">From the <span id="k-repos"></span> public repositories that submissions link to: <span id="k-commits"></span> commits in all.</p>
+  <div class="grid">
+    <div class="card wide"><h3>The weekend, hour by hour</h3><p class="note">Commits in each hour of Saturday and Sunday, Dushanbe time. Orange is between midnight and six in the morning.</p><div id="k-hours"></div><p class="note" id="k-hours-note" style="margin:8px 0 0"></p></div>
+    <div class="card"><h3>Languages of the code</h3><p class="note">Share of all bytes in the public repositories, as GitHub counts them.</p><div id="k-langs"></div></div>
+    <div class="card"><h3>Commits per repository</h3><p class="note">How much history the public repositories hold.</p><div id="x-commits"></div></div>
+    <div class="card wide"><h3>Code in the open</h3><p class="note">Of all 125 submitted projects. A repository counts when the submission links to it.</p><div id="x-repo"></div></div>
   </div>
-  <div class="controls">
-    <input id="q" type="search" placeholder="Search team or project" aria-label="Search team or project">
-    <select id="f-ch" aria-label="Challenge"></select>
-    <span class="count" id="r-count"></span>
-  </div>
-  <div class="tablebox"><table id="rtable"><thead><tr>
-    <th class="num">#</th><th>Team and project</th>
-    <th class="num" data-k="total" aria-sort="descending"><button>Total</button></th>
-    <th class="num" data-k="impact"><button>Impact</button></th><th class="num" data-k="creativity"><button>Creativity</button></th>
-    <th class="num" data-k="validity"><button>Validity</button></th><th class="num" data-k="relevance"><button>Relevance</button></th>
-    <th class="num" data-k="presentation"><button>Presentation</button></th>
-  </tr></thead><tbody></tbody></table></div>
-  <button class="more" id="r-more" hidden>Show all</button>
+</div></section>
+
+<section id="records"><div class="wrap">
+  <h2>Records of the weekend</h2>
+  <p class="intro">Ten measurable firsts and mosts. Each is a count, not a judgement of quality.</p>
+  <div class="recs" id="recs"></div>
 </div></section>
 
 <section id="all"><div class="wrap">
@@ -201,20 +200,19 @@ button.more { font: inherit; font-size: 14px; background: var(--card); color: va
 <footer><div class="wrap">
   <p><b>Source.</b> The public team and project pages of <a href="https://www.spaceappschallenge.org/2026/local-events/dushanbe/?tab=teams">Space Apps 2026, Dushanbe</a>, read on <span id="f-date"></span> through the site's own public data interface. Projects may have changed since.</p>
   <p><b>Privacy.</b> Member names are not shown here. Team names, project texts and links are as the teams published them.</p>
-  <p><b>Not affiliated.</b> This page is not made or endorsed by NASA or the Space Apps organisers, and the rating on it is not the official judging.</p>
+  <p><b>Not affiliated.</b> This page is not made or endorsed by NASA or the Space Apps organisers. It counts and measures; it does not judge the projects.</p>
 </div></footer>
 <div id="tip" role="status"></div>
 
 <script src="data.js"></script>
 <script>
 (() => {
-const D = window.DATA, T = D.teams, S = T.filter(t => t.submitted), R = S.filter(t => t.score);
+const D = window.DATA, T = D.teams, S = T.filter(t => t.submitted);
 const $ = (s) => document.querySelector(s);
 const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const count = (arr, f) => { const m = new Map(); for (const x of arr) for (const k of [].concat(f(x))) m.set(k, (m.get(k) || 0) + 1); return [...m].sort((a, b) => b[1] - a[1]); };
 const mean = (a) => a.reduce((x, y) => x + y, 0) / (a.length || 1);
 const short = (c) => c.replace(/: .*/, "").replace("Create Health Monitoring Software for Astronauts on Space Missions", "Health Monitoring for Astronauts").replace("Identify Earth Locations that Analog the Permanent Moon Base Locations and Mars", "Earth Analogs of Moon and Mars Bases").replace("Harmonization of MODIS and VIIRS Hot Spots", "MODIS and VIIRS Hot Spots").replace("Build a Junior Astronaut Mission Trainer", "Junior Astronaut Mission Trainer");
-const ME = "BilliBon";
 
 // ---- tooltip
 const tip = $("#tip");
@@ -273,7 +271,7 @@ const dl = new Date(D.deadline).getTime(), local = (iso) => new Date(new Date(is
 const lastHour = S.filter((t) => { const d = dl - new Date(t.at).getTime(); return d >= -60e3 && d < 3600e3; }).length;
 const after = S.filter((t) => new Date(t.at).getTime() > dl + 60e3).length;
 $("#h-sub").textContent = S.length; $("#h-rush").textContent = lastHour;
-$("#lede").textContent = `${T.length} teams and ${D.participants} people signed up for the hackathon in Dushanbe. This page counts what they chose, how they built it and what they handed in, and ends with an unofficial rating of every submitted project.`;
+$("#lede").textContent = `${T.length} teams and ${D.participants} people signed up for the hackathon in Dushanbe. This page counts what they chose, how they built it, what a browser test found on their sites, and when their code was written.`;
 const sizes = T.map((t) => t.members);
 $("#kpis").innerHTML = [[T.length, "teams registered"], [S.length, "projects submitted"], [Math.round(100 * S.length / T.length) + "%", "of teams submitted"], [D.participants, "participants in teams"], [mean(sizes).toFixed(1), "members in an average team"], [new Set(S.map((t) => t.challenge)).size, "challenges with a submission"]]
   .map(([n, l]) => `<div class="kpi"><div class="n">${n}</div><div class="l">${l}</div></div>`).join("");
@@ -326,70 +324,43 @@ hbar($("#h-data"), D.mentions.data.slice(0, 14).map(([k, n]) => [k, n, pct(n)]),
 }
 drawTop();
 
-// ---- rating
-const CR = ["impact", "creativity", "validity", "relevance", "presentation"], cap = (s) => s[0].toUpperCase() + s.slice(1);
-const ranked = [...R].sort((a, b) => b.score.total - a.score.total || b.score.validity - a.score.validity || a.team.localeCompare(b.team));
-ranked.forEach((t, i) => { t.rank = i && ranked[i - 1].score.total === t.score.total ? ranked[i - 1].rank : i + 1; });
-const bm = Object.values(D.batchMeans || {});
-$("#method").innerHTML = `<b>How it was made.</b> For each of the ${R.length} submitted projects an AI model (Claude) was given three things: the team's text, the result of an automatic browser test of the project site (screenshots on desktop and phone, what happened when buttons were clicked, errors, data requests), and the public facts of the code repository. It scored each project from 1 to 10 on the five criteria the event names: impact, creativity, validity, relevance and presentation. Where the text and the evidence disagreed, the evidence won. The projects were shuffled into five groups, each read by a separate run of the model with the same written rubric${bm.length ? ` (group averages ran from ${Math.min(...bm)} to ${Math.max(...bm)} of 50, so a gap of a few points between two projects means little)` : ""}. <b>Limits:</b> the test clicks, it does not play a game to the end or check the science; it did not watch the demo videos; a product behind a file link or a video could not be tested and is capped. One automatic visit can catch a site on a bad minute. <b>Conflict of interest:</b> this page was put together by a participating team, ${ME} (marked with an orange edge in the table). Its project went through the same test and rubric, but treat its place with that in mind.`;
-$("#podium").innerHTML = ranked.slice(0, 3).map((t) => `<div class="card"><div class="rank">PLACE ${t.rank} · ${esc(short(t.challenge)).toUpperCase()}</div><div class="score">${t.score.total}<small> / 50</small></div><h3>${esc(t.team)}</h3><p>${esc(t.score.one)}</p></div>`).join("");
-function drawRatingCharts() {
-  {
-    const order = ["works", "partly works", "broken", "could not test"], w = count(R, (t) => t.score.works || "not judged"), get = (k) => (w.find((x) => x[0] === k) || [k, 0])[1];
-    hbar($("#x-works"), order.filter((k) => get(k)).map((k) => [k[0].toUpperCase() + k.slice(1), get(k), `${get(k)} · ${Math.round(100 * get(k) / R.length)}%`]), { labelWidth: 130, rowHeight: 34, label: "Projects by whether they work" });
-    const P = S.filter((t) => t.probe), L = P.filter((t) => t.probe.loaded), n = (f) => L.filter(f).length; $("#x-nsites").textContent = P.length;
-    hbar($("#x-probe"), [["The site loaded", L.length], ["No script errors", n((t) => !t.probe.errors)], ["No failed requests", n((t) => !t.probe.http)], ["Fits a phone screen", n((t) => t.probe.overflow <= 8)], ["Every clicked control reacted", n((t) => t.probe.clicks > 0 && t.probe.changed === t.probe.clicks)], ["Asks a server for data", n((t) => t.probe.api > 0)], ["Ready within 5 seconds", n((t) => t.probe.loadS <= 5)]].map(([k, v]) => [k, v, `${v} · ${Math.round(100 * v / P.length)}%`]), { labelWidth: 220, max: P.length, rowHeight: 28, label: "Results of the browser test" });
-    const G = S.filter((t) => t.repo), g = (f) => G.filter(f).length;
-    hbar($("#x-repo"), [["Public repository linked", G.length], ["More than 10 commits", g((t) => t.repo.commits > 10)], ["Has a real README", g((t) => t.repo.readme > 500)], ["Has test files", g((t) => t.repo.tests > 0)], ["States a licence", g((t) => t.repo.license)], ["More than one author", g((t) => t.repo.authors > 1)]].map(([k, v]) => [k, v, `${v} · ${Math.round(100 * v / S.length)}%`]), { labelWidth: 210, max: S.length, rowHeight: 28, label: "Facts about public repositories" });
-    const ce = [1, 2, 6, 11, 21, 51, 101, 1e9], cn = ["1", "2–5", "6–10", "11–20", "21–50", "51–100", "over 100"];
-    vbar($("#x-commits"), cn.map((nm, i) => { const c = G.filter((t) => t.repo.commits >= ce[i] && t.repo.commits < ce[i + 1]).length; return [nm, c, `<b>${nm} commit${nm === "1" ? "" : "s"}</b><br>${c} repositories`]; }), { values: true, label: "Repositories by number of commits" });
-    const Dn = R.filter((t) => t.score.design);
-    vbar($("#x-design"), [1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((v) => { const c = Dn.filter((t) => t.score.design === v).length; return [String(v), c, `<b>Design ${v} of 10</b><br>${c} projects`]; }), { values: true, label: "Projects by design mark" });
-    const X = R.filter((t) => t.score.text), W = Math.max(280, $("#x-gap").clientWidth || 560), H = 250, L0 = 34, B = 34, T0 = 10, x = (v) => L0 + (W - L0 - 12) * (v - 5) / 45, y = (v) => T0 + (H - B - T0) * (1 - (v - 5) / 45);
-    let g2 = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Score from text against score after the test">`;
-    for (const v of [10, 20, 30, 40, 50]) g2 += `<line x1="${L0}" x2="${W}" y1="${y(v)}" y2="${y(v)}" stroke="var(--grid)"/><text x="${L0 - 6}" y="${y(v) + 4}" text-anchor="end">${v}</text><text x="${x(v)}" y="${H - 14}" text-anchor="middle">${v}</text>`;
-    g2 += `<line x1="${x(5)}" y1="${y(5)}" x2="${x(50)}" y2="${y(50)}" stroke="var(--ink)" stroke-dasharray="3 3"/><text x="${W}" y="${H}" text-anchor="end">score from the text alone</text>`;
-    X.forEach((t) => { g2 += `<circle tabindex="0" data-tip="<b>${esc(t.team)}</b><br>text ${t.score.text} → tested ${t.score.total}" cx="${x(t.score.text)}" cy="${y(t.score.total)}" r="5" fill="${t.team === ME ? "var(--amber)" : "var(--blue)"}" fill-opacity=".75" stroke="var(--card)" stroke-width="1.5"/>`; });
-    $("#x-gap").innerHTML = g2 + "</svg>"; bindTips($("#x-gap"));
-  }
-  const bins = []; for (let a = 10; a < 50; a += 4) { const c = R.filter((t) => t.score.total >= a && t.score.total < a + 4).length; bins.push([`${a}–${a + 3}`, c, `<b>${a} to ${a + 3} points</b><br>${c} projects`]); }
-  vbar($("#r-hist"), bins, { values: true, label: "Projects by total score" });
-  hbar($("#r-crit"), CR.map((c) => [cap(c), +mean(R.map((t) => t.score[c])).toFixed(1), mean(R.map((t) => t.score[c])).toFixed(1) + " / 10"]), { labelWidth: 120, max: 10, rowHeight: 34, label: "Average score per criterion" });
-  const per = count(R, (t) => t.challenge).map(([c, n]) => [c, n, mean(R.filter((t) => t.challenge === c).map((t) => t.score.total))]).sort((a, b) => b[2] - a[2]);
-  hbar($("#r-chal"), per.map(([c, n, m]) => [short(c), +m.toFixed(1), `${m.toFixed(1)} · ${n}`, `<b>${esc(c)}</b><br>average ${m.toFixed(1)} of 50 over ${n} projects`]), { labelWidth: 235, clip: 34, max: 50, rowHeight: 24, label: "Average total score per challenge" });
-  const W = Math.max(280, $("#r-scatter").clientWidth || 560), H = 250, L = 34, B = 34, T0 = 10, mx = 25000, x = (v) => L + (W - L - 12) * Math.min(v, mx) / mx, y = (v) => T0 + (H - B - T0) * (1 - (v - 5) / 45);
-  let s = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Total score against length of text">`;
-  for (const g of [10, 20, 30, 40, 50]) s += `<line x1="${L}" x2="${W}" y1="${y(g)}" y2="${y(g)}" stroke="var(--grid)"/><text x="${L - 6}" y="${y(g) + 4}" text-anchor="end">${g}</text>`;
-  for (const g of [0, 5000, 10000, 15000, 20000, 25000]) s += `<text x="${x(g)}" y="${H - 14}" text-anchor="middle">${g ? g / 1000 + "k" + (g === mx ? "+" : "") : 0}</text>`;
-  s += `<text x="${W}" y="${H}" text-anchor="end">characters written</text>`;
-  R.forEach((t) => { s += `<circle tabindex="0" data-tip="<b>${esc(t.team)}</b><br>${t.score.total} points · ${t.chars.toLocaleString("en")} characters" cx="${x(t.chars)}" cy="${y(t.score.total)}" r="5" fill="${t.team === ME ? "var(--amber)" : "var(--blue)"}" fill-opacity=".75" stroke="var(--card)" stroke-width="1.5"/>`; });
-  $("#r-scatter").innerHTML = s + "</svg>"; bindTips($("#r-scatter"));
+// ---- measured facts: browser test, repositories, records
+const X = D.extra;
+function drawMore() {
+  const pc = (n, of) => `${n} · ${Math.round(100 * n / of)}%`;
+  vbar($("#t-rate"), [1, 2, 3, 4, 5, 6].map((n) => { const a = T.filter((t) => t.members === n), k = a.filter((t) => t.submitted).length, r = Math.round(100 * k / (a.length || 1)); return [`${n}`, r, `<b>Teams of ${n}</b><br>${k} of ${a.length} submitted (${r}%)`, n === 1]; }), { values: true, label: "Share of teams that submitted, by team size, in percent" });
+  hbar($("#t-names"), [["One word", X.names.oneWord], ["ALL CAPITALS", X.names.caps], ["Has a digit", X.names.digits], ["Has an emoji or symbol", X.names.emoji]].map(([k, v]) => [k, v, pc(v, T.length)]), { labelWidth: 190, max: T.length, rowHeight: 30, label: "Facts about team names" });
+  $("#t-countries").textContent = `An average name is ${X.names.avg} characters long. Participants gave ${X.countries.length} home countries: ${X.countries[0][1]} are from ${X.countries[0][0]}, then ${X.countries.slice(1, 6).map(([c, n]) => `${c} ${n}`).join(", ")} and ${X.countries.length - 6} more with one each.`;
+  vbar($("#h-aicount"), [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((n) => { const c = S.filter((t) => t.ai.filter((a) => !/^None/.test(a)).length === n).length; return [String(n), c, `<b>${n} kind${n === 1 ? "" : "s"} of AI use</b><br>${c} projects`]; }), { values: true, label: "Projects by number of kinds of AI use" });
+  const chs = count(S, (t) => t.challenge).map(([c, n]) => { const a = S.filter((t) => t.challenge === c); return { c, n, ai: a.filter((t) => t.ai.some((x) => /Building/.test(x))).length, med: [...a.map((t) => t.chars)].sort((p, q) => p - q)[Math.floor(a.length / 2)] }; });
+  hbar($("#h-aibuilt"), [...chs].sort((a, b) => b.ai / b.n - a.ai / a.n).map((x) => [short(x.c), Math.round(100 * x.ai / x.n), `${Math.round(100 * x.ai / x.n)}% · ${x.ai}/${x.n}`, `<b>${esc(x.c)}</b><br>${x.ai} of ${x.n} projects built AI into the product`]), { labelWidth: 230, max: 100, rowHeight: 24, label: "Share of projects with AI built in, per challenge" });
+  hbar($("#h-charsch"), [...chs].sort((a, b) => b.med - a.med).map((x) => [short(x.c), +(x.med / 1000).toFixed(1), `${(x.med / 1000).toFixed(1)}k · ${x.n}`, `<b>${esc(x.c)}</b><br>median ${x.med.toLocaleString("en")} characters over ${x.n} projects`]), { labelWidth: 230, rowHeight: 24, label: "Median length of project text per challenge" });
+  hbar($("#h-words"), X.words.map(([k, n]) => [k, n]), { labelWidth: 120, rowHeight: 24, label: "Words in project names" });
+
+  const P = S.filter((t) => t.probe), L = P.filter((t) => t.probe.loaded), n = (f) => L.filter(f).length; $("#x-nsites").textContent = P.length;
+  hbar($("#x-probe"), [["The site loaded", L.length], ["Fits a phone screen", n((t) => t.probe.overflow <= 8)], ["Asks a server for data", n((t) => t.probe.api > 0)], ["No failed requests", n((t) => !t.probe.http)], ["No script errors", n((t) => !t.probe.errors)], ["Draws on a canvas (3D, maps, games)", n((t) => t.probe.canvas > 0)], ["Every clicked control reacted", n((t) => t.probe.clicks > 0 && t.probe.changed === t.probe.clicks)]].map(([k, v]) => [k, v, pc(v, P.length)]), { labelWidth: 250, max: P.length, rowHeight: 28, label: "Results of the browser test" });
+  const se = [0, 4, 6, 8, 10, 15, 20, 30, 1e9], sn = ["under 4", "4–6", "6–8", "8–10", "10–15", "15–20", "20–30", "over 30"];
+  vbar($("#x-speed"), sn.map((nm, i) => { const c = L.filter((t) => t.probe.loadS >= se[i] && t.probe.loadS < se[i + 1]).length; return [nm, c, `<b>${nm} seconds</b><br>${c} sites`]; }), { values: true, label: "Sites by seconds until ready" });
+  hbar($("#x-fonts"), X.fonts.map(([k, v]) => [k, v, pc(v, X.sitesShot)]), { labelWidth: 150, rowHeight: 24, label: "Typefaces used on project sites" });
+  hbar($("#x-services"), X.services.map(([k, v]) => [k, v, pc(v, X.sitesShot)]), { labelWidth: 270, rowHeight: 26, label: "Outside services contacted by project sites" });
+  hbar($("#x-nasa"), X.nasaHosts.map(([k, v]) => [k, v]), { labelWidth: 220, rowHeight: 24, label: "NASA servers contacted live" });
+  const we = [0, 10, 20, 40, 80, 160, 1e9], wn = ["under 10", "10–19", "20–39", "40–79", "80–159", "160 or more"];
+  vbar($("#x-weight"), wn.map((nm, i) => { const c = L.filter((t) => t.requests >= we[i] && t.requests < we[i + 1]).length; return [nm, c, `<b>${nm} requests</b><br>${c} sites`]; }), { values: true, label: "Sites by number of requests" });
+
+  const G = S.filter((t) => t.repo), g = (f) => G.filter(f).length;
+  $("#k-repos").textContent = G.length; $("#k-commits").textContent = X.commitsTotal.toLocaleString("en");
+  const days = ["Sat", "Sun"];
+  vbar($("#k-hours"), X.commitHours.map((c, i) => [`${days[Math.floor(i / 24)]} ${i % 24}:00`, c, `<b>${["Saturday", "Sunday"][Math.floor(i / 24)]} ${i % 24}:00–${i % 24 + 1}:00</b><br>${c} commit${c === 1 ? "" : "s"}`, i % 24 < 6]), { every: 6, height: 240, values: true, label: "Commits per hour over the weekend" });
+  const peak = X.commitHours.indexOf(Math.max(...X.commitHours));
+  $("#k-hours-note").textContent = `The busiest hour was ${["Saturday", "Sunday"][Math.floor(peak / 24)]} ${peak % 24}:00, with ${X.commitHours[peak]} commits. ${X.commitsNight} commits were made between midnight and six. ${X.commitsBefore} commits are dated before Saturday and ${X.commitsAfter} after Sunday.`;
+  hbar($("#k-langs"), X.langs.map(([k, v]) => [k, v, v + "%"]), { labelWidth: 150, rowHeight: 26, label: "Share of code by language" });
+  hbar($("#x-repo"), [["Public repository linked", G.length], ["Has a real README", g((t) => t.repo.readme > 500)], ["Has test files", g((t) => t.repo.tests > 0)], ["More than 10 commits", g((t) => t.repo.commits > 10)], ["States a licence", g((t) => t.repo.license)], ["More than one author", g((t) => t.repo.authors > 1)]].map(([k, v]) => [k, v, pc(v, S.length)]), { labelWidth: 220, max: S.length, rowHeight: 28, label: "Facts about public repositories" });
+  const ce = [1, 2, 6, 11, 21, 51, 101, 1e9], cn = ["1", "2–5", "6–10", "11–20", "21–50", "51–100", "over 100"];
+  vbar($("#x-commits"), cn.map((nm, i) => { const c = G.filter((t) => t.repo.commits >= ce[i] && t.repo.commits < ce[i + 1]).length; return [nm, c, `<b>${nm} commit${nm === "1" ? "" : "s"}</b><br>${c} repositories`]; }), { values: true, label: "Repositories by number of commits" });
 }
-drawRatingCharts();
-let rz, lastW = innerWidth; addEventListener("resize", () => { if (innerWidth === lastW) return; lastW = innerWidth; clearTimeout(rz); rz = setTimeout(() => { drawTop(); drawRatingCharts(); }, 150); });
-const stateWord = { ok: ["opens", "ok"], login: ["needs a login", "bad"], broken: ["did not open", "bad"], unchecked: ["not checked", ""], missing: ["no link", "bad"] };
-const pips = (n) => `<span class="pips" aria-hidden="true">${Array.from({ length: 10 }, (_, i) => `<i class="${i < n ? "on" : ""}"></i>`).join("")}</span>`;
-let sortKey = "total", sortDir = -1, showAll = false, open = null;
-$("#f-ch").innerHTML = `<option value="">All challenges</option>` + count(R, (t) => t.challenge).map(([c, n]) => `<option value="${esc(c)}">${esc(short(c))} (${n})</option>`).join("");
-function drawRating() {
-  const q = $("#q").value.trim().toLowerCase(), ch = $("#f-ch").value;
-  let rows = ranked.filter((t) => (!ch || t.challenge === ch) && (!q || (t.team + " " + t.project + " " + t.score.one).toLowerCase().includes(q)));
-  rows.sort((a, b) => sortDir * (a.score[sortKey] - b.score[sortKey]) || a.rank - b.rank);
-  const filtered = q || ch, shown = showAll || filtered ? rows : rows.slice(0, 25);
-  $("#r-count").textContent = `${shown.length} of ${R.length} projects`;
-  $("#r-more").hidden = showAll || filtered || rows.length <= 25; $("#r-more").textContent = `Show all ${rows.length}`;
-  $("#rtable tbody").innerHTML = shown.map((t) => {
-    const s = t.score, d = stateWord[t.demoState], l = stateWord[t.linkState];
-    let h = `<tr class="row${t.team === ME ? " me" : ""}" tabindex="0" data-id="${t.id}" aria-expanded="${open === t.id}"><td class="num">${t.rank}</td><td><div class="t">${esc(t.team)}${s.works ? ` <span class="pill ${s.works === "works" ? "ok" : s.works === "broken" ? "bad" : ""}" style="font-weight:400;margin-left:6px">${esc(s.works)}</span>` : ""}</div><div class="c">${esc(short(t.challenge))} · ${esc(s.one)}</div></td><td class="num"><span class="total">${s.total}</span></td>${CR.map((c) => `<td class="num">${s[c]}</td>`).join("")}</tr>`;
-    if (open === t.id) h += `<tr class="detail"><td colspan="8"><div class="cols"><div><h4>Project</h4><p><b>${esc(t.project)}</b></p>${s.evidence ? `<h4>What the test showed</h4><p>${esc(s.evidence)}</p>` : ""}<h4>Strengths</h4><p>${esc(s.plus)}</p><h4>Weaknesses</h4><p>${esc(s.minus)}</p><h4>Links</h4><p><a href="${esc(t.link)}" target="_blank" rel="noopener noreferrer">Project</a> <span class="pill ${l[1]}">${l[0]}</span> <a href="${esc(t.demo)}" target="_blank" rel="noopener noreferrer">Demo</a> <span class="pill ${d[1]}">${d[0]}</span> <a href="${esc(t.url)}" target="_blank" rel="noopener noreferrer">Team page</a></p></div><div><h4>Scores</h4>${CR.map((c) => `<div class="bar5"><span>${cap(c)}</span><span class="track"><i style="width:${s[c] * 10}%"></i></span><b>${s[c]}</b></div>`).join("")}${s.design ? `<div class="bar5" style="margin-top:10px"><span>Design</span><span class="track"><i style="width:${s.design * 10}%;background:var(--amber)"></i></span><b>${s.design}</b></div>` : ""}${t.probe ? `<h4>Browser test</h4><p>${t.probe.loaded ? `<span class="pill">ready in ${t.probe.loadS} s</span><span class="pill">${t.probe.changed} of ${t.probe.clicks} clicks reacted</span><span class="pill ${t.probe.errors ? "bad" : "ok"}">${t.probe.errors} script error${t.probe.errors === 1 ? "" : "s"}</span><span class="pill ${t.probe.overflow > 8 ? "bad" : "ok"}">${t.probe.overflow > 8 ? "overflows on a phone" : "fits a phone"}</span>` : `<span class="pill bad">did not load</span>`}</p>` : ""}${t.repo ? `<h4>Repository</h4><p><a href="${esc(t.repo.url)}" target="_blank" rel="noopener noreferrer">${esc(t.repo.url.replace("https://github.com/", ""))}</a><br><span class="pill">${t.repo.commits} commits</span><span class="pill">${t.repo.files} files</span><span class="pill">${t.repo.tests} test files</span>${t.repo.lang ? `<span class="pill">${esc(t.repo.lang)}</span>` : ""}</p>` : ""}<h4>About</h4><p>${s.kind ? `<span class="pill">${esc(s.kind)}</span>` : ""}${s.built ? `<span class="pill">${esc(s.built)}</span>` : ""}<span class="pill">${t.members} member${t.members > 1 ? "s" : ""}</span><span class="pill">${t.demoKind}</span></p>${t.techWords.length ? `<p style="margin-top:6px">${t.techWords.map((w) => `<span class="pill">${esc(w)}</span>`).join("")}</p>` : ""}</div></div></td></tr>`;
-    return h;
-  }).join("") || `<tr><td colspan="8">No project matches. Clear the search to see all.</td></tr>`;
-}
-$("#rtable tbody").addEventListener("click", (e) => { if (e.target.closest("a")) return; const r = e.target.closest("tr.row"); if (r) { open = open === r.dataset.id ? null : r.dataset.id; drawRating(); } });
-$("#rtable tbody").addEventListener("keydown", (e) => { const r = e.target.closest("tr.row"); if (r && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); const id = r.dataset.id; open = open === id ? null : id; drawRating(); document.querySelector(`tr.row[data-id="${CSS.escape(id)}"]`)?.focus(); } });
-document.querySelectorAll("#rtable th[data-k]").forEach((th) => th.querySelector("button").addEventListener("click", () => { const k = th.dataset.k; sortDir = sortKey === k ? -sortDir : -1; sortKey = k; document.querySelectorAll("#rtable th").forEach((x) => x.removeAttribute("aria-sort")); th.setAttribute("aria-sort", sortDir < 0 ? "descending" : "ascending"); drawRating(); }));
-$("#q").addEventListener("input", drawRating); $("#f-ch").addEventListener("change", drawRating); $("#r-more").addEventListener("click", () => { showAll = true; drawRating(); });
-drawRating();
+drawMore();
+$("#recs").innerHTML = X.records.map(([k, v, who, d]) => `<div class="rec"><div class="k">${esc(k)}</div><div class="v">${esc(v)}</div><div class="w">${esc(who)}</div><div class="d">${esc(d)}</div></div>`).join("");
+let rz, lastW = innerWidth; addEventListener("resize", () => { if (innerWidth === lastW) return; lastW = innerWidth; clearTimeout(rz); rz = setTimeout(() => { drawTop(); drawMore(); }, 150); });
 
 // ---- all teams
 function drawAll() {

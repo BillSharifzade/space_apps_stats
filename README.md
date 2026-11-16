@@ -1,12 +1,12 @@
-# Space Apps 2026, Dushanbe: teams and projects in charts
+# Space Apps 2026, Dushanbe, in numbers
 
-A static page with charts about the NASA Space Apps Challenge 2026 local event in Dushanbe: 173 teams, 125 submitted projects, how they were built, and an unofficial rating of every submitted project.
+A static page with charts about the NASA Space Apps Challenge 2026 local event in Dushanbe: 173 teams, 125 submitted projects, how they were built, what a browser test found on the project sites, and when the code was written.
 
 Live page: https://billsharifzade.github.io/space_apps_stats/
 
-- **Source.** The public team and project pages of the [Dushanbe local event](https://www.spaceappschallenge.org/2026/local-events/dushanbe/?tab=teams), read on 16 November 2026.
+- **Source.** The public team and project pages of the [Dushanbe local event](https://www.spaceappschallenge.org/2026/local-events/dushanbe/?tab=teams), read on 16 November 2026, plus the public project sites and GitHub repositories that the submissions link to.
 - **Privacy.** Member names are not published here, only the number of members per team.
-- **The rating is unofficial.** An AI model (Claude) scored each project from 1 to 10 on impact, creativity, validity, relevance and presentation, from three things: the team's text, an automatic browser test of the project site (screenshots, clicks, errors, phone view) and the public facts of its code repository. It did not watch the demo videos or check the science. The page was put together by a participating team (BilliBon), whose own project is in the list; read its place with that in mind.
+- **It counts and measures; it does not judge the projects.** The browser test opened each site once, clicked up to ten controls and typed nothing.
 - **Not affiliated** with NASA or the Space Apps organisers.
 
 `tools/` holds the scripts that fetched the data, checked the links, tested the sites (`probe.mjs`), read the repositories (`repos.py`) and built `data.js`. The page itself is `index.html` with no build step.
